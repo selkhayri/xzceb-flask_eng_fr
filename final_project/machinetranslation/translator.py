@@ -39,7 +39,7 @@ def englishToFrench(english_text=""):
     else:
         french_text = language_translator.translate( text=text_to_translate,
                                                  model_id=EN_FR).get_result()
-    
+
     return french_text
 
 """
@@ -52,7 +52,7 @@ def frenchToEnglish(french_text=""):
         text_to_translate = request.args.get('textToTranslate')
     else:
         text_to_translate = french_text
-    
+
     if text_to_translate == "":
         english_text = ""
     else:
@@ -64,15 +64,12 @@ def frenchToEnglish(french_text=""):
 @app.route("/")
 def renderIndexPage():
     # Write the code to render template
-    #with open("../templates/index.html","r") as f:
-    #    index_page = f.read()
-    #    return index_page 
     return render_template("index.html")
-    
+
 @app.route("/static/<path:path>")
 def static_dir(path):
-   print("In static_dir")
-   return send_from_directory("static", path)
+    print("In static_dir")
+    return send_from_directory("static", path)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
