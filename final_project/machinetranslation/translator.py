@@ -34,7 +34,10 @@ def englishToFrench(english_text=""):
     else:
         text_to_translate = english_text
 
-    french_text = language_translator.translate( text=text_to_translate,
+    if text_to_translate == "":
+        french_text = ""
+    else:
+        french_text = language_translator.translate( text=text_to_translate,
                                                  model_id=EN_FR).get_result()
     
     return french_text
@@ -49,8 +52,11 @@ def frenchToEnglish(french_text=""):
         text_to_translate = request.args.get('textToTranslate')
     else:
         text_to_translate = french_text
-
-    english_text = language_translator.translate( text=text_to_translate,
+    
+    if text_to_translate == "":
+        english_text = ""
+    else:
+        english_text = language_translator.translate( text=text_to_translate,
                                                  model_id=FR_EN).get_result()
 
     return english_text
