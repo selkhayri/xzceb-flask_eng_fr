@@ -6,7 +6,7 @@ import os
 from ibm_watson import LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,7 +16,7 @@ url = os.environ['url']
 
 authenticator = IAMAuthenticator(apikey)
 
-app = Flask("Web Translator")
+app = Flask("Web Translator", template_folder="templates")
 language_translator = LanguageTranslatorV3(authenticator=authenticator, version='2018-05-01')
 language_translator.set_disable_ssl_verification(True)
 language_translator.set_service_url(url)
@@ -36,7 +36,7 @@ def englishToFrench(english_text=""):
 
     french_text = language_translator.translate( text=text_to_translate,
                                                  model_id=EN_FR).get_result()
-
+    
     return french_text
 
 """
@@ -58,7 +58,15 @@ def frenchToEnglish(french_text=""):
 @app.route("/")
 def renderIndexPage():
     # Write the code to render template
-    pass
+    #with open("../templates/index.html","r") as f:
+    #    index_page = f.read()
+    #    return index_page 
+    return render_template("index.html")
+    
+@app.route("/static/<path:path>")
+def static_dir(path):
+   print("In static_dir")
+   return send_from_directory("static", path)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
